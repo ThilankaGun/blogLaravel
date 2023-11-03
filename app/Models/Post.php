@@ -31,29 +31,27 @@ class Post
 
     public static function all()
     {
-        return collect(\Illuminate\Support\Facades\File::files(resource_path("posts")))
-            ->map(fn($file) => \Spatie\YamlFrontMatter\YamlFrontMatter::parseFile($file))
-            ->map(fn($document) => new Post(
-                $document->title,
-                $document->excerpt,
-                $document->date,
-                $document->body(),
-                $document->slug
-            ));
+        return cache()->rememberForever('posts.all', function (){
+            return collect(\Illuminate\Support\Facades\File::files(resource_path("posts")))
+                ->map(fn($file) => \Spatie\YamlFrontMatter\YamlFrontMatter::parseFile($file))
+                ->map(fn($document) => new Post(
+                    $document->title,
+                    $document->excerpt,
+                    $document->date,
+                    $document->body(),
+                    $document->slug
+                ))
+                ->sortByDesc('date');
+        });
+
+
         //return \Illuminate\Support\Facades\File::files(resource_path("posts/"));
         //return File::files(resource_path("posts/"));
     }
 
     public static function find($slug)
     {
-            if(! file_exists($path = resource_path("posts/{$slug}.html"))){
-                throw new ModelNotFoundException();
-                //return redirect('/');                                                               //redirecting
-                //abort(404);
-            }
-
-            return cache()->remember("posts.{slug}", 1200, fn() => file_get_contents($path)); //caching
-
+        return static::all()->firstWhere('slug', $slug);
     }
 
 
