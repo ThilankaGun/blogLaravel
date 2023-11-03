@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,28 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+                                                //following method is exactly same as above
+                                            //    $posts = array_map(function ($file){
+                                            //        $document = \Spatie\YamlFrontMatter\YamlFrontMatter::parseFile($file);
+                                            //
+                                            //        return new Post(
+                                            //            $document->title,
+                                            //            $document->excerpt,
+                                            //            $document->date,
+                                            //            $document->body(),
+                                            //            $document->slug
+                                            //        );
+                                            //    }, $files);
+
+    return view('posts', [
+        'posts' => Post::all()
+    ]);
 });
+
+Route::get('posts/{post}', function ($slug) {                                               //wild cards
+    return view('post', [
+        'post' => Post::find($slug)
+    ]);
+
+
+})->where('post', '[A-z_\-]+');                                                 //constrains
