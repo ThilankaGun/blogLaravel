@@ -1,7 +1,6 @@
-@extends('layout')
-
-@section('content')
-    @foreach ($posts as $post)                      <!--using "@" is a blade directives, instead using < ? php.... ?>-->
+<x-layout>
+    @foreach ($posts as $post)
+        <!--using "@" is a blade directives, instead using < ? php.... ?>-->
         <article>
             <h1>
                 <a href="/posts/{{$post->slug}} ">
@@ -16,5 +15,7 @@
 
         </article>
     @endforeach
-@endsection
+
+</x-layout>
+
 
