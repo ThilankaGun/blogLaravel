@@ -33,10 +33,12 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('posts/{post}', function ($slug) {                                               //wild cards
+Route::get('posts/{post::slug}', function (Post $post) {  //Post::where('slug', $post)->firstOrFail();  //wild cards
     return view('post', [
-        'post' => Post::find($slug)
+        'post' => $post
+        //'post' => Post::findOrFail($id)
     ]);
 
 
-})->where('post', '[A-z_\-]+');                                                 //constrains
+});
+    //->where('post', '[A-z_\-]+');                                                 //constrains
