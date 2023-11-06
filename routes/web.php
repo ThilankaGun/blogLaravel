@@ -15,25 +15,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-                                                //following method is exactly same as above
-                                            //    $posts = array_map(function ($file){
-                                            //        $document = \Spatie\YamlFrontMatter\YamlFrontMatter::parseFile($file);
-                                            //
-                                            //        return new Post(
-                                            //            $document->title,
-                                            //            $document->excerpt,
-                                            //            $document->date,
-                                            //            $document->body(),
-                                            //            $document->slug
-                                            //        );
-                                            //    }, $files);
+    \Illuminate\Support\Facades\DB::listen(function ($query){
+        logger($query->sql, $query->bindings);
+    });
 
     return view('posts', [
         'posts' => Post::all()
     ]);
 });
 
-Route::get('posts/{post::slug}', function (Post $post) {  //Post::where('slug', $post)->firstOrFail();  //wild cards
+Route::get('posts/{post:slug}', function (Post $post) {  //Post::where('slug', $post)->firstOrFail();  //wild cards
     return view('post', [
         'post' => $post
         //'post' => Post::findOrFail($id)
@@ -42,3 +33,9 @@ Route::get('posts/{post::slug}', function (Post $post) {  //Post::where('slug', 
 
 });
     //->where('post', '[A-z_\-]+');                                                 //constrains
+
+Route::get('categories/{category:slug}', function (\App\Models\Category $category){
+    return view('posts', [
+        'posts' => $category->posts
+    ]);
+});
