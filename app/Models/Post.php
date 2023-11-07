@@ -15,15 +15,21 @@ class Post extends Model
     //protected $fillable = ['title', 'excerpt', 'body', 'slug', 'category_id'];
     protected $guarded = [];
 
+
     public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         //hasOne, hasMany, belongsTo, belongsToMany
         return $this->belongsTo(Category::class);
     }
 
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function author(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(\App\Models\User::class);
+        return $this->belongsTo(\App\Models\User::class, 'user_id');
     }
+
+//    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+//    {
+//        return $this->belongsTo(\App\Models\User::class, 'user_id');
+//    }
 
 }
