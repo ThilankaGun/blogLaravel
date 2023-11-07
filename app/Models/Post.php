@@ -15,6 +15,8 @@ class Post extends Model
     //protected $fillable = ['title', 'excerpt', 'body', 'slug', 'category_id'];
     protected $guarded = [];
 
+    protected $with = ['category', 'author'];
+
 
     public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
