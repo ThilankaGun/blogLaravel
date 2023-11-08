@@ -21,6 +21,7 @@ Route::get('/', function () {
 
     return view('posts', [
         'posts' => Post::latest()->get(),
+        'categories' => \App\Models\Category::all(),
     ]);
 });
 
@@ -36,6 +37,8 @@ Route::get('posts/{post:slug}', function (Post $post) {  //Post::where('slug', $
 Route::get('categories/{category:slug}', function (App\Models\Category $category) {
     return view('posts', [
         'posts' => $category->posts,
+        'currentCategory' => $category,
+        'categories' => \App\Models\Category::all(),
     ]);
 });
 
@@ -48,5 +51,6 @@ Route::get('categories/{category:slug}', function (App\Models\Category $category
 Route::get('authors/{author:username}', function (App\Models\User $author) {
     return view('posts', [
         'posts' => $author->posts,
+        'categories' => \App\Models\Category::all(),
     ]);
 });
