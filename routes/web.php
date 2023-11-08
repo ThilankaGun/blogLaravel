@@ -23,7 +23,7 @@ Route::get('/', function () {
         'posts' => Post::latest()->get(),
         'categories' => \App\Models\Category::all(),
     ]);
-});
+})->name('home');
 
 Route::get('posts/{post:slug}', function (Post $post) {  //Post::where('slug', $post)->firstOrFail();  //wild cards
     return view('post', [
@@ -40,7 +40,7 @@ Route::get('categories/{category:slug}', function (App\Models\Category $category
         'currentCategory' => $category,
         'categories' => \App\Models\Category::all(),
     ]);
-});
+})->name('category');
 
 //Route::get('users/{user}', function (\App\Models\User $user){
 //    return view('posts', [
