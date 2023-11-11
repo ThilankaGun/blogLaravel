@@ -14,33 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    //    \Illuminate\Support\Facades\DB::listen(function ($query){
-    //        logger($query->sql, $query->bindings);
-    //    });
+Route::get('/', [\App\Http\Controllers\PostController::class, 'index'])->name('home');
 
-    $posts = Post::latest();
-
-    if (request('search')) {
-        $posts
-            ->where('title', 'like', '%' . request('search') . '%')
-            ->orWhere('body', 'like', '%' . request('search') . '%');
-    }
-
-    return view('posts', [
-        'posts' => $posts->get(),
-        //'posts' => Post::latest()->get(),
-        'categories' => \App\Models\Category::all(),
-    ]);
-})->name('home');
-
-Route::get('posts/{post:slug}', function (Post $post) {  //Post::where('slug', $post)->firstOrFail();  //wild cards
-    return view('post', [
-        'post' => $post,
-        //'post' => Post::findOrFail($id)
-    ]);
-
-});
+Route::get('posts/{post:slug}', [\App\Http\Controllers\PostController::class, 'show']);
 //->where('post', '[A-z_\-]+');                                                 //constrains
 
 Route::get('categories/{category:slug}', function (App\Models\Category $category) {
