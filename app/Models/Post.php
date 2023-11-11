@@ -20,11 +20,19 @@ class Post extends Model
             $query
                 ->where('title', 'like', '%' . $search . '%')
                 ->orWhere('body', 'like', '%' . $search . '%'));
+
+        $query->when($filters['category'] ?? false, fn ($query, $category) =>
+            $query
+                ->whereExists(fn($query) =>
+                    $query->from('categories')
+                        ->whereColumn('categories.id', 'posts.category_id')
+                        ->where('categories.slug', $category))
+                );
+
     }
 
     public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        //hasOne, hasMany, belongsTo, belongsToMany
         return $this->belongsTo(Category::class);
     }
 
@@ -33,9 +41,5 @@ class Post extends Model
         return $this->belongsTo(\App\Models\User::class, 'user_id');
     }
 
-    //    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    //    {
-    //        return $this->belongsTo(\App\Models\User::class, 'user_id');
-    //    }
 
 }

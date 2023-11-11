@@ -15,9 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [\App\Http\Controllers\PostController::class, 'index'])->name('home');
-
 Route::get('posts/{post:slug}', [\App\Http\Controllers\PostController::class, 'show']);
-//->where('post', '[A-z_\-]+');                                                 //constrains
+
 
 Route::get('categories/{category:slug}', function (App\Models\Category $category) {
     return view('posts', [
@@ -27,11 +26,6 @@ Route::get('categories/{category:slug}', function (App\Models\Category $category
     ]);
 })->name('category');
 
-//Route::get('users/{user}', function (\App\Models\User $user){
-//    return view('posts', [
-//        'posts' => $user->posts
-//        ]);
-//});
 
 Route::get('authors/{author:username}', function (App\Models\User $author) {
     return view('posts', [
