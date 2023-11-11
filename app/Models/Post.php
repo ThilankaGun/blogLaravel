@@ -14,6 +14,14 @@ class Post extends Model
 
     protected $with = ['category', 'author'];
 
+    public function scopeFilter($query, $filters) //Post::newQuery()->filter()
+    {
+        $query->when($filters['search'] ?? false, fn ($query, $search) =>
+            $query
+                ->where('title', 'like', '%' . $search . '%')
+                ->orWhere('body', 'like', '%' . $search . '%'));
+    }
+
     public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         //hasOne, hasMany, belongsTo, belongsToMany
